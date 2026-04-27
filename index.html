@@ -319,47 +319,267 @@ footer strong{color:var(--text2);font-weight:500;}
   .header-right{display:none;}
   .panel{padding:.9rem 1rem;}
 }
+
+/* ── HELP TEXT ── */
+.help-text{font-size:11px;color:var(--text3);margin-bottom:10px;line-height:1.6;}
+
+/* ── MANUAL NAME ENTRY ── */
+.name-input-row{display:flex;gap:6px;margin-bottom:6px;}
+.name-input-row input{
+  flex:1;font-family:'Instrument Sans',sans-serif;font-size:12px;
+  padding:6px 10px;border:1px solid var(--border2);border-radius:8px;
+  background:var(--bg2);color:var(--text);transition:border-color .2s;
+}
+.name-input-row input::placeholder{color:var(--text3);}
+.name-input-row input:focus{outline:none;border-color:var(--burgundy);box-shadow:0 0 0 3px var(--burgdim);}
+.btn-add{
+  padding:6px 14px;background:var(--burgdim);color:var(--burgundy);
+  border:1px solid var(--burgborder);border-radius:8px;
+  font-family:'Instrument Sans',sans-serif;font-size:12px;font-weight:600;
+  cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .15s;
+}
+.btn-add:hover{background:rgba(132,1,50,0.28);}
+.or-divider{
+  font-size:10px;color:var(--text3);text-align:center;
+  letter-spacing:.08em;text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;margin:8px 0;
+}
+.or-divider::before,.or-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.csv-link{
+  font-size:11px;color:var(--burgundy);cursor:pointer;
+  text-decoration:underline;display:inline-block;margin-top:5px;
+}
+.csv-link:hover{color:var(--burgundy2);}
+.name-count{
+  font-size:11px;color:var(--text3);margin-top:7px;
+  display:none;padding:5px 9px;background:var(--burgdim);
+  border:1px solid var(--burgborder);border-radius:8px;text-align:center;
+}
+.name-count strong{color:var(--burgundy);}
+.chip-x{
+  background:none;border:none;color:var(--text3);cursor:pointer;
+  font-size:10px;margin-left:3px;line-height:1;padding:0 2px;
+  vertical-align:middle;transition:color .1s;
+}
+.chip-x:hover{color:var(--red2);}
+
+/* ── FONT PREVIEW ── */
+.font-preview-box{
+  margin-top:10px;padding:10px 14px;
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);
+  font-size:20px;color:var(--text);text-align:center;
+  overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+  transition:all .25s;line-height:1.4;letter-spacing:0.01em;
+}
+
+/* ══════════════════════════════════════════════
+   LANDING SCREEN
+══════════════════════════════════════════════ */
+#landing{
+  position:fixed;inset:0;z-index:500;
+  background:var(--bg);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:2rem;
+  transition:opacity .45s ease, transform .45s ease;
+}
+#landing.hide{
+  opacity:0;transform:translateY(-18px);pointer-events:none;
+}
+
+.landing-logo{
+  font-family:'Syne',sans-serif;font-weight:800;font-size:22px;
+  letter-spacing:-0.04em;color:var(--text);
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:2.4rem;
+}
+.landing-logo .logo-dot{
+  width:9px;height:9px;border-radius:50%;background:var(--burgundy);
+  box-shadow:0 0 12px rgba(132,1,50,0.9);
+}
+
+.landing-badge{
+  font-family:'Instrument Sans',sans-serif;font-size:10px;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;
+  background:var(--burgdim);color:var(--burgundy);
+  border:1px solid var(--burgborder);border-radius:99px;padding:2px 9px;
+}
+
+.landing-hero{
+  text-align:center;max-width:520px;margin-bottom:2.4rem;
+}
+.landing-title{
+  font-family:'Syne',sans-serif;font-size:clamp(28px,5vw,46px);font-weight:800;
+  letter-spacing:-0.03em;color:var(--text);line-height:1.1;
+  margin-bottom:.7rem;
+}
+.landing-title span{color:var(--burgundy);}
+.landing-sub{
+  font-size:15px;color:var(--text2);line-height:1.7;
+}
+
+.landing-upload{
+  width:100%;max-width:480px;
+  border:2px dashed var(--border2);border-radius:18px;
+  padding:2.8rem 2rem;text-align:center;cursor:pointer;
+  transition:all .25s;background:var(--bg1);
+  position:relative;overflow:hidden;display:block;
+}
+.landing-upload::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 0%,var(--burgdim),transparent 65%);
+  opacity:0;transition:opacity .3s;
+}
+.landing-upload:hover::before,.landing-upload.drag::before{opacity:1;}
+.landing-upload:hover,.landing-upload.drag{
+  border-color:var(--burgborder);background:var(--bg2);
+  box-shadow:0 0 0 4px var(--burgdim);
+}
+.landing-upload input{display:none;}
+.lu-icon{font-size:42px;margin-bottom:12px;display:block;transition:transform .25s;}
+.landing-upload:hover .lu-icon,.landing-upload.drag .lu-icon{transform:scale(1.1) translateY(-4px);}
+.lu-title{
+  font-family:'Syne',sans-serif;font-size:17px;font-weight:700;
+  color:var(--text);margin-bottom:6px;
+}
+.lu-sub{font-size:13px;color:var(--text3);line-height:1.6;}
+.lu-btn{
+  display:inline-block;margin-top:18px;
+  padding:10px 28px;background:var(--burgundy);color:#fff;
+  border-radius:10px;font-family:'Syne',sans-serif;
+  font-size:13px;font-weight:700;letter-spacing:.02em;
+  transition:all .2s;
+}
+.landing-upload:hover .lu-btn{background:var(--burgundy2);box-shadow:0 6px 20px rgba(132,1,50,0.4);}
+
+.landing-steps{
+  display:flex;gap:2rem;margin-top:2rem;
+  font-size:12px;color:var(--text3);text-align:center;
+}
+.ls-step{display:flex;flex-direction:column;align-items:center;gap:5px;}
+.ls-num{
+  width:24px;height:24px;border-radius:50%;
+  background:var(--bg3);border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--text3);
+}
+.ls-label{max-width:90px;line-height:1.4;}
+.ls-arrow{color:var(--border2);font-size:18px;align-self:center;margin-top:-6px;}
+
+.landing-footer{
+  position:absolute;bottom:20px;
+  font-size:11px;color:var(--text3);
+}
+.landing-footer strong{color:var(--text2);}
+
+/* app hidden until landing done */
+#appShell{display:none;flex-direction:column;height:100vh;}
+#appShell.show{display:flex;}
+
+/* change-template link in editor */
+.change-tpl{
+  font-size:11px;color:var(--burgundy);cursor:pointer;
+  text-decoration:underline;display:inline-block;
+  text-underline-offset:2px;
+}
+.change-tpl:hover{color:var(--burgundy2);}
+
+@media(max-width:600px){
+  .landing-steps{gap:1rem;}
+  .ls-arrow{display:none;}
+}
 </style>
 </head>
 <body>
 
+<!-- ══ SCREEN 1: LANDING ══ -->
+<div id="landing">
+  <div class="landing-logo">
+    <span class="logo-dot"></span>CertGen
+    <span class="landing-badge">AUB Edition</span>
+  </div>
+
+  <div class="landing-hero">
+    <div class="landing-title">Generate certificates<br><span>in minutes</span></div>
+    <div class="landing-sub">Upload your blank PDF template, add names, customize the text — and download a personalized certificate for every person instantly.</div>
+  </div>
+
+  <label class="landing-upload" id="landingZone">
+    <input type="file" id="landingInput" accept=".pdf">
+    <span class="lu-icon">🎓</span>
+    <div class="lu-title">Upload your certificate template</div>
+    <div class="lu-sub">Drag & drop your blank PDF here, or click to browse your files.<br>Any PDF works — a Word export, Canva design, etc.</div>
+    <span class="lu-btn">Choose PDF file</span>
+  </label>
+
+  <div class="landing-steps">
+    <div class="ls-step">
+      <div class="ls-num">1</div>
+      <div class="ls-label">Upload PDF template</div>
+    </div>
+    <div class="ls-arrow">→</div>
+    <div class="ls-step">
+      <div class="ls-num">2</div>
+      <div class="ls-label">Add names</div>
+    </div>
+    <div class="ls-arrow">→</div>
+    <div class="ls-step">
+      <div class="ls-num">3</div>
+      <div class="ls-label">Style the text</div>
+    </div>
+    <div class="ls-arrow">→</div>
+    <div class="ls-step">
+      <div class="ls-num">4</div>
+      <div class="ls-label">Download ZIP</div>
+    </div>
+  </div>
+
+  <div class="landing-footer">crafted by <strong>Ali Charaf</strong></div>
+</div>
+
+<!-- ══ SCREEN 2: EDITOR ══ -->
+<div id="appShell">
+
 <header>
   <div class="logo"><span class="logo-dot"></span>CertGen</div>
   <div class="logo-badge">AUB Edition</div>
-  <div class="header-right">crafted by <strong>Ali Charad</strong></div>
+  <div class="header-right">
+    <span id="tplName" style="color:var(--text2);font-weight:500;"></span>
+    <span class="change-tpl" onclick="backToLanding()">Change template</span>
+  </div>
 </header>
 
 <div class="app">
 <aside class="sidebar">
 
-  <!-- 1. Template -->
+  <!-- 1. Names -->
   <div class="panel">
-    <div class="plabel"><span class="snum" id="sn1">1</span>Template</div>
-    <label class="drop-zone" id="pdfZone">
-      <input type="file" id="pdfInput" accept=".pdf">
-      <span class="dicon">📄</span>
-      <div class="dtitle">Upload PDF template</div>
-      <div class="dsub">Your blank certificate design</div>
-    </label>
-    <div id="pdfBadge"></div>
-  </div>
+    <div class="plabel"><span class="snum" id="sn1">1</span>Add Names</div>
+    <div class="help-text">Type names one by one, or upload a CSV file with one name per row.</div>
 
-  <!-- 2. Names -->
-  <div class="panel">
-    <div class="plabel"><span class="snum" id="sn2">2</span>Names</div>
+    <div class="name-input-row">
+      <input type="text" id="nameInput" placeholder="e.g. John Doe" onkeydown="if(event.key==='Enter')addManualName()">
+      <button class="btn-add" onclick="addManualName()">+ Add</button>
+    </div>
+
+    <div class="or-divider">or upload a file</div>
+
     <label class="drop-zone" id="csvZone">
       <input type="file" id="csvInput" accept=".csv,.txt">
       <span class="dicon">📋</span>
-      <div class="dtitle">Upload CSV of names</div>
-      <div class="dsub">One name per row · header auto-skipped</div>
+      <div class="dtitle">Click or drag a CSV file here</div>
+      <div class="dsub">One name per row &middot; header auto-skipped</div>
     </label>
+    <span class="csv-link" onclick="downloadSampleCSV()">⬇ Download a sample CSV to see the format</span>
     <div id="csvBadge"></div>
     <div id="nameChips"></div>
+    <div class="name-count" id="nameCount"><strong id="nameCountNum">0</strong> names ready to go</div>
   </div>
 
-  <!-- 3. Font -->
+  <!-- 2. Font -->
   <div class="panel">
-    <div class="plabel"><span class="snum" id="sn3">3</span>Font</div>
+    <div class="plabel"><span class="snum" id="sn2">2</span>Font &amp; Style</div>
+    <div class="help-text">Choose the font and size for the names. A live preview is shown below.</div>
 
     <div class="crow">
       <span class="clabel">Typeface</span>
@@ -474,7 +694,10 @@ footer strong{color:var(--text2);font-weight:500;}
       </select>
     </div>
 
-    <div class="crow">
+    <!-- Live font preview -->
+    <div class="font-preview-box" id="fontPreview">Certificate of Achievement</div>
+
+    <div class="crow" style="margin-top:10px;">
       <span class="clabel">Size</span>
       <input type="number" id="fontSize" value="32" min="6" max="160" onchange="updateLabel()">
     </div>
@@ -489,9 +712,9 @@ footer strong{color:var(--text2);font-weight:500;}
     </div>
   </div>
 
-  <!-- 4. Color -->
+  <!-- 3. Color -->
   <div class="panel">
-    <div class="plabel"><span class="snum" id="sn4">4</span>Color</div>
+    <div class="plabel"><span class="snum" id="sn3">3</span>Text Color</div>
 
     <div class="crow" style="margin-bottom:12px;">
       <span class="clabel">Custom</span>
@@ -514,13 +737,13 @@ footer strong{color:var(--text2);font-weight:500;}
     <div class="swatch-grid" id="swatchNeutral"></div>
   </div>
 
-  <!-- 5. Export -->
+  <!-- 4. Export -->
   <div class="panel" style="padding-bottom:1rem;">
-    <div class="plabel"><span class="snum" id="sn5">5</span>Export</div>
+    <div class="plabel"><span class="snum" id="sn4">4</span>Export</div>
 
     <label class="trow">
       <span class="tog"><input type="checkbox" id="borderToggle" checked onchange="toggleBorder()"><span class="tog-track"></span></span>
-      Show guide border
+      Show name position guide <span style="font-size:10px;color:var(--text3);">(not visible in final PDF)</span>
     </label>
 
     <button class="btn-gen" id="genBtn" onclick="generate()" disabled>
@@ -539,7 +762,7 @@ footer strong{color:var(--text2);font-weight:500;}
 
 <main class="canvas-area">
   <div class="empty-state" id="emptyState">
-    <div class="empty-glow">🐸</div>
+    <div class="empty-glow">🎓</div>
     <div class="empty-title">Drop your certificate</div>
     <div class="empty-sub">Upload a PDF template on the left, then drag the name label to position it</div>
   </div>
@@ -556,9 +779,36 @@ footer strong{color:var(--text2);font-weight:500;}
   CertGen &nbsp;·&nbsp; built by <strong>Ali Charaf</strong>
 </footer>
 
+</div><!-- /#appShell -->
+
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 const $=id=>document.getElementById(id);
+
+/* ── LANDING SCREEN ── */
+const landingZone=$('landingZone');
+landingZone.addEventListener('dragover',e=>{e.preventDefault();landingZone.classList.add('drag');});
+landingZone.addEventListener('dragleave',()=>landingZone.classList.remove('drag'));
+landingZone.addEventListener('drop',e=>{
+  e.preventDefault();landingZone.classList.remove('drag');
+  const f=e.dataTransfer.files[0];
+  if(f&&f.type==='application/pdf')loadPDF(f);
+});
+$('landingInput').addEventListener('change',e=>e.target.files[0]&&loadPDF(e.target.files[0]));
+
+function showEditor(){
+  $('landing').classList.add('hide');
+  setTimeout(()=>{
+    $('landing').style.display='none';
+    $('appShell').classList.add('show');
+  },460);
+}
+function backToLanding(){
+  removePDF();
+  $('appShell').classList.remove('show');
+  $('landing').style.display='flex';
+  requestAnimationFrame(()=>$('landing').classList.remove('hide'));
+}
 
 /* ── AUB COLOR PALETTE ── */
 const COLORS = {
@@ -655,23 +905,24 @@ buildSwatches('swatchNeutral', COLORS.neutral);
 
 /* ── STATE ── */
 let pdfBytes=null, names=[], zipBlob=null;
+let csvCount=0; // how many entries in names[] came from CSV (always at the front)
 let canvasW=0, canvasH=0, pdfPageW=0, pdfPageH=0, rs=1;
 let posX=50, posY=45, dragging=false, dragOffX=0, dragOffY=0;
 
 /* ── DROP ZONES ── */
-['pdf','csv'].forEach(t=>{
-  const z=$(t+'Zone');
-  z.addEventListener('dragover',e=>{e.preventDefault();z.classList.add('drag');});
-  z.addEventListener('dragleave',()=>z.classList.remove('drag'));
-  z.addEventListener('drop',e=>{e.preventDefault();z.classList.remove('drag');const f=e.dataTransfer.files[0];if(f)t==='pdf'?loadPDF(f):loadCSV(f);});
-});
-$('pdfInput').addEventListener('change',e=>e.target.files[0]&&loadPDF(e.target.files[0]));
+const csvZoneEl=$('csvZone');
+csvZoneEl.addEventListener('dragover',e=>{e.preventDefault();csvZoneEl.classList.add('drag');});
+csvZoneEl.addEventListener('dragleave',()=>csvZoneEl.classList.remove('drag'));
+csvZoneEl.addEventListener('drop',e=>{e.preventDefault();csvZoneEl.classList.remove('drag');const f=e.dataTransfer.files[0];if(f)loadCSV(f);});
 $('csvInput').addEventListener('change',e=>e.target.files[0]&&loadCSV(e.target.files[0]));
 
 /* ── LOAD PDF ── */
 async function loadPDF(file){
   const ab=await file.arrayBuffer();
   pdfBytes=new Uint8Array(ab);
+  showEditor();
+  // show template name in header
+  $('tplName').textContent=file.name;
   const pdf=await pdfjsLib.getDocument({data:new Uint8Array(ab)}).promise;
   const page=await pdf.getPage(1);
   const vp0=page.getViewport({scale:1});
@@ -685,20 +936,20 @@ async function loadPDF(file){
   $('emptyState').style.display='none';
   $('cvwrap').classList.add('show');
   $('hintToast').classList.add('show');
-  setTimeout(()=>$('hintToast').classList.remove('show'),4000);
+  setTimeout(()=>$('hintToast').classList.remove('show'),4500);
   const d=$('draggable');
   d.textContent=getSample(); d.classList.add('show');
   d.style.left=posX+'%'; d.style.top=posY+'%';
   updateLabel();
-  $('pdfBadge').innerHTML=pill(file.name,'removePDF()');
-  $('sn1').className='snum done'; checkReady();
+  checkReady();
 }
 function removePDF(){
-  pdfBytes=null; $('pdfBadge').innerHTML='';
+  pdfBytes=null;
+  $('tplName').textContent='';
   $('emptyState').style.display='block';
   $('cvwrap').classList.remove('show');
   $('hintToast').classList.remove('show');
-  $('sn1').className='snum'; checkReady();
+  checkReady();
 }
 
 /* ── LOAD CSV ── */
@@ -715,14 +966,14 @@ function loadCSV(file){
       ${names.length>24?`<span class="chip more">+${names.length-24}</span>`:''}
     </div>`;
     const d=$('draggable'); if(d){d.textContent=getSample();updateLabel();}
-    $('sn2').className='snum done'; checkReady();
+    $('sn1').className='snum done'; checkReady();
   };
   r.readAsText(file);
 }
 function removeCSV(){
   names=[]; $('csvBadge').innerHTML=''; $('nameChips').innerHTML='';
   const d=$('draggable'); if(d){d.textContent='John Doe';updateLabel();}
-  $('sn2').className='snum'; checkReady();
+  $('sn1').className='snum'; checkReady();
 }
 
 function pill(name,fn){
@@ -799,7 +1050,7 @@ document.addEventListener('touchend',()=>{dragging=false;});
 function checkReady(){
   const ok=pdfBytes&&names.length>0;
   $('genBtn').disabled=!ok;
-  if(ok){$('sn3').className='snum done';$('sn4').className='snum done';}
+  if(ok){$('sn2').className='snum done';$('sn3').className='snum done';}
 }
 
 /* ── GENERATE ── */
@@ -906,7 +1157,7 @@ async function generate(){
     await new Promise(r=>setTimeout(r,0));
   }
   $('statusMsg').textContent=`✓ ${names.length} certificates ready`;
-  $('sn5').className='snum done';
+  $('sn4').className='snum done';
   zipBlob=await zip.generateAsync({type:'blob'});
   $('dlBtn').classList.add('show');
   btn.disabled=false;
