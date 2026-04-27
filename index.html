@@ -1086,25 +1086,47 @@ function removePDF(){
 }
 
 /* ── LOAD CSV ── */
+function parseNamesFromText(text){
+  const rows=text
+    .replace(/^\uFEFF/, '')
+    .split(/\r?\n/)
+    .map(r=>r.trim())
+    .filter(Boolean);
+
+  const headerWords=new Set(['name','names','full name','full_name','student','students']);
+  const out=[];
+
+  for(const row of rows){
+    // Support comma, semicolon, or tab-delimited files.
+    const cells=row
+      .split(/[,;\t]/)
+      .map(c=>c.replace(/^"|"$/g,'').trim())
+      .filter(Boolean);
+
+    for(const cell of cells){
+      if(headerWords.has(cell.toLowerCase())) continue;
+      out.push(cell);
+    }
+  }
+
+  return out;
+}
+
 function loadCSV(file){
   const r=new FileReader();
   r.onload=e=>{
-    let lines=e.target.result.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
-    names=lines.map(l=>l.split(',')[0].replace(/^"|"$/g,'').trim()).filter(Boolean);
-    const h=names[0]?.toLowerCase();
-    if(h==='name'||h==='full name'||h==='names')names.shift();
+    names=parseNamesFromText(String(e.target.result||''));
     $('csvBadge').innerHTML=pill(`${file.name} — ${names.length} names`,'removeCSV()');
-    $('nameChips').innerHTML=`<div class="chips">
-      ${names.slice(0,24).map(n=>`<span class="chip">${n}</span>`).join('')}
-      ${names.length>24?`<span class="chip more">+${names.length-24}</span>`:''}
-    </div>`;
+    renderNameChips();
     if($('draggable').classList.contains('show')){$('nameLabel').textContent=getSample();updateLabel();}
-    $('sn1').className='snum done'; checkReady();
+    $('sn1').className=names.length>0?'snum done':'snum';
+    checkReady();
   };
   r.readAsText(file);
 }
 function removeCSV(){
   names=[]; $('csvBadge').innerHTML=''; $('nameChips').innerHTML='';
+  $('nameCount').style.display='none';
   if($('draggable').classList.contains('show')){$('nameLabel').textContent='John Doe';updateLabel();}
   $('sn1').className='snum'; checkReady();
 }
