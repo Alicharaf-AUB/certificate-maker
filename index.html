@@ -488,6 +488,66 @@ footer strong{color:var(--text2);font-weight:500;}
   .landing-steps{gap:1rem;}
   .ls-arrow{display:none;}
 }
+
+/* ══ METHOD PICKER ══ */
+#methodPicker{
+  position:fixed;inset:0;z-index:490;background:var(--bg);
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  padding:2rem;overflow-y:auto;
+}
+#methodPicker.show{display:flex;animation:fadeUp .4s ease both;}
+.mp-step{
+  font-size:11px;color:var(--text3);letter-spacing:.12em;text-transform:uppercase;
+  margin-bottom:1.2rem;display:flex;align-items:center;gap:7px;
+}
+.mp-step-dot{width:6px;height:6px;border-radius:50%;background:var(--burgundy);box-shadow:0 0 8px rgba(132,1,50,0.7);}
+.mp-title{
+  font-family:'Syne',sans-serif;font-size:clamp(20px,4vw,32px);font-weight:800;
+  letter-spacing:-0.03em;color:var(--text);margin-bottom:.45rem;text-align:center;
+}
+.mp-sub{font-size:13px;color:var(--text3);margin-bottom:2rem;text-align:center;}
+.mp-cards{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;}
+.mp-card{
+  width:210px;padding:2rem 1.5rem;background:var(--bg1);
+  border:1.5px solid var(--border2);border-radius:18px;
+  cursor:pointer;text-align:center;transition:all .22s;position:relative;overflow:hidden;
+}
+.mp-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,var(--burgdim),transparent 70%);opacity:0;transition:opacity .3s;}
+.mp-card:hover::before{opacity:1;}
+.mp-card:hover{border-color:var(--burgborder);transform:translateY(-5px);box-shadow:0 14px 44px rgba(132,1,50,0.15);}
+.mp-icon{font-size:36px;margin-bottom:12px;}
+.mp-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.mp-desc{font-size:12px;color:var(--text3);line-height:1.6;}
+.mp-card-badge{
+  display:inline-block;margin-top:12px;padding:3px 10px;
+  background:var(--burgdim);color:var(--burgundy);border:1px solid var(--burgborder);
+  border-radius:99px;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+}
+.mp-back{
+  background:none;border:none;color:var(--text3);cursor:pointer;
+  font-size:13px;margin-top:2rem;display:flex;align-items:center;gap:6px;transition:color .15s;
+}
+.mp-back:hover{color:var(--text2);}
+@media(max-width:520px){.mp-cards{flex-direction:column;align-items:center;}.mp-card{width:90%;max-width:280px;}}
+
+/* ── CENTER SNAP GUIDES ── */
+.guide{position:absolute;pointer-events:none;display:none;z-index:20;}
+.guide.active{display:block;}
+#guideH{left:0;right:0;top:50%;height:1px;background:rgba(56,189,248,0.9);box-shadow:0 0 8px rgba(56,189,248,0.4);}
+#guideV{top:0;bottom:0;left:50%;width:1px;background:rgba(56,189,248,0.9);box-shadow:0 0 8px rgba(56,189,248,0.4);}
+
+/* ── RESIZE HANDLE ── */
+#resizeHandle{
+  position:absolute;bottom:-6px;right:-6px;
+  width:16px;height:16px;background:var(--burgundy);
+  border:2px solid rgba(255,255,255,0.35);border-radius:4px;
+  cursor:nwse-resize;display:none;
+  align-items:center;justify-content:center;
+  font-size:9px;color:#fff;opacity:.85;z-index:5;
+  transition:opacity .15s,transform .15s;user-select:none;
+}
+#draggable.show #resizeHandle{display:flex;}
+#resizeHandle:hover{opacity:1;transform:scale(1.15);}
 </style>
 </head>
 <body>
@@ -535,6 +595,32 @@ footer strong{color:var(--text2);font-weight:500;}
   </div>
 
   <div class="landing-footer">crafted by <strong>Ali Charaf</strong></div>
+</div>
+
+<!-- ══ SCREEN 1b: METHOD PICKER ══ -->
+<div id="methodPicker">
+  <div class="landing-logo" style="margin-bottom:1.6rem;">
+    <span class="logo-dot"></span>CertGen
+    <span class="landing-badge">AUB Edition</span>
+  </div>
+  <div class="mp-step"><span class="mp-step-dot"></span>Step 2 of 4 &mdash; Add Names</div>
+  <div class="mp-title">How will you add names?</div>
+  <div class="mp-sub">Template ready: <strong id="mpFilename" style="color:var(--text2);"></strong></div>
+  <div class="mp-cards">
+    <div class="mp-card" onclick="chooseMethod('csv')">
+      <div class="mp-icon">📊</div>
+      <div class="mp-name">Upload a file</div>
+      <div class="mp-desc">Import from a CSV or Excel spreadsheet. Perfect for large batches of 10&plus; people.</div>
+      <div class="mp-card-badge">CSV &middot; Excel</div>
+    </div>
+    <div class="mp-card" onclick="chooseMethod('manual')">
+      <div class="mp-icon">✏️</div>
+      <div class="mp-name">Type manually</div>
+      <div class="mp-desc">Add names one by one. Great for small groups or a quick one-off generation.</div>
+      <div class="mp-card-badge">Quick &amp; easy</div>
+    </div>
+  </div>
+  <button class="mp-back" onclick="backFromMethod()">← Change template</button>
 </div>
 
 <!-- ══ SCREEN 2: EDITOR ══ -->
@@ -768,7 +854,9 @@ footer strong{color:var(--text2);font-weight:500;}
   </div>
   <div class="cvwrap" id="cvwrap">
     <canvas id="pdfCanvas"></canvas>
-    <div id="draggable"></div>
+    <div class="guide" id="guideH"></div>
+    <div class="guide" id="guideV"></div>
+    <div id="draggable"><span id="nameLabel"></span><div id="resizeHandle">⤡</div></div>
   </div>
   <div class="hint-toast" id="hintToast">✋ Drag the label to position it on the certificate</div>
 </main>
@@ -810,6 +898,9 @@ function showEditor(){
 function backToLanding(){
   removePDF();
   $('appShell').classList.remove('show');
+  $('methodPicker').classList.remove('show');
+  pdfBytes=null; pendingFile=null;
+  $('landingInput').value='';
   $('landing').style.display='flex';
   requestAnimationFrame(()=>$('landing').classList.remove('hide'));
 }
@@ -908,10 +999,10 @@ buildSwatches('swatchCool',    COLORS.cool);
 buildSwatches('swatchNeutral', COLORS.neutral);
 
 /* ── STATE ── */
-let pdfBytes=null, names=[], zipBlob=null;
-let csvCount=0; // how many entries in names[] came from CSV (always at the front)
+let pdfBytes=null, pendingFile=null, names=[], zipBlob=null;
 let canvasW=0, canvasH=0, pdfPageW=0, pdfPageH=0, rs=1;
 let posX=50, posY=45, dragging=false, dragOffX=0, dragOffY=0;
+let resizing=false, resizeStartX=0, resizeStartFontSize=0;
 
 /* ── DROP ZONES ── */
 const csvZoneEl=$('csvZone');
@@ -924,25 +1015,62 @@ $('csvInput').addEventListener('change',e=>e.target.files[0]&&loadCSV(e.target.f
 async function loadPDF(file){
   const ab=await file.arrayBuffer();
   pdfBytes=new Uint8Array(ab);
+  pendingFile=file;
+  showMethodPicker(file.name);
+}
+
+function showMethodPicker(filename){
+  $('mpFilename').textContent=filename;
+  $('landing').classList.add('hide');
+  setTimeout(()=>{
+    $('landing').style.display='none';
+    $('methodPicker').classList.add('show');
+  },460);
+}
+
+function backFromMethod(){
+  $('methodPicker').classList.remove('show');
+  pdfBytes=null; pendingFile=null;
+  $('landingInput').value='';
+  $('landing').style.display='flex';
+  requestAnimationFrame(()=>$('landing').classList.remove('hide'));
+}
+
+async function chooseMethod(type){
+  $('methodPicker').classList.remove('show');
   await showEditor();
-  // show template name in header
-  $('tplName').textContent=file.name;
-  const pdf=await pdfjsLib.getDocument({data:new Uint8Array(ab)}).promise;
+  $('tplName').textContent=pendingFile.name;
+  await renderPDF();
+  if(type==='manual'){
+    $('nameInput').focus();
+  } else {
+    $('csvZone').scrollIntoView({behavior:'smooth',block:'center'});
+  }
+}
+
+async function renderPDF(){
+  const pdf=await pdfjsLib.getDocument({data:new Uint8Array(pdfBytes)}).promise;
   const page=await pdf.getPage(1);
   const vp0=page.getViewport({scale:1});
   pdfPageW=vp0.width; pdfPageH=vp0.height;
   const area=$('cvwrap').parentElement;
-  rs=Math.min((area.clientWidth-80)/vp0.width,(area.clientHeight-80)/vp0.height,2);
-  const vp=page.getViewport({scale:rs});
-  canvasW=Math.round(vp.width); canvasH=Math.round(vp.height);
-  const c=$('pdfCanvas'); c.width=canvasW; c.height=canvasH;
+  const displayRs=Math.min((area.clientWidth-80)/vp0.width,(area.clientHeight-80)/vp0.height,2);
+  rs=displayRs;
+  // Render at device pixel ratio for crisp high-DPI display
+  const dpr=Math.min(window.devicePixelRatio||1,3);
+  const vp=page.getViewport({scale:displayRs*dpr});
+  canvasW=Math.round(vp.width/dpr); canvasH=Math.round(vp.height/dpr);
+  const c=$('pdfCanvas');
+  c.width=Math.round(vp.width); c.height=Math.round(vp.height);
+  c.style.width=canvasW+'px'; c.style.height=canvasH+'px';
   await page.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;
   $('emptyState').style.display='none';
   $('cvwrap').classList.add('show');
   $('hintToast').classList.add('show');
   setTimeout(()=>$('hintToast').classList.remove('show'),4500);
+  $('nameLabel').textContent=getSample();
   const d=$('draggable');
-  d.textContent=getSample(); d.classList.add('show');
+  d.classList.add('show');
   d.style.left=posX+'%'; d.style.top=posY+'%';
   updateLabel();
   checkReady();
@@ -969,14 +1097,14 @@ function loadCSV(file){
       ${names.slice(0,24).map(n=>`<span class="chip">${n}</span>`).join('')}
       ${names.length>24?`<span class="chip more">+${names.length-24}</span>`:''}
     </div>`;
-    const d=$('draggable'); if(d){d.textContent=getSample();updateLabel();}
+    if($('draggable').classList.contains('show')){$('nameLabel').textContent=getSample();updateLabel();}
     $('sn1').className='snum done'; checkReady();
   };
   r.readAsText(file);
 }
 function removeCSV(){
   names=[]; $('csvBadge').innerHTML=''; $('nameChips').innerHTML='';
-  const d=$('draggable'); if(d){d.textContent='John Doe';updateLabel();}
+  if($('draggable').classList.contains('show')){$('nameLabel').textContent='John Doe';updateLabel();}
   $('sn1').className='snum'; checkReady();
 }
 
@@ -1023,19 +1151,44 @@ function toggleBorder(){$('draggable').classList.toggle('no-border',!$('borderTo
 /* ── DRAG ── */
 const dEl=$('draggable');
 dEl.addEventListener('mousedown',e=>{
+  if(e.target.id==='resizeHandle')return;
   dragging=true;
   const r=dEl.getBoundingClientRect();
   dragOffX=e.clientX-r.left-r.width/2; dragOffY=e.clientY-r.top-r.height/2;
   e.preventDefault();
 });
+$('resizeHandle').addEventListener('mousedown',e=>{
+  resizing=true;
+  resizeStartX=e.clientX;
+  resizeStartFontSize=parseInt($('fontSize').value);
+  e.preventDefault(); e.stopPropagation();
+});
+function applySnap(nx,ny){
+  const snap=1.8;
+  if(Math.abs(nx-50)<snap){nx=50;$('guideV').classList.add('active');}
+  else $('guideV').classList.remove('active');
+  if(Math.abs(ny-50)<snap){ny=50;$('guideH').classList.add('active');}
+  else $('guideH').classList.remove('active');
+  return [nx,ny];
+}
 document.addEventListener('mousemove',e=>{
+  if(resizing){
+    const dx=e.clientX-resizeStartX;
+    const ns=Math.max(6,Math.min(160,resizeStartFontSize+Math.round(dx/rs)));
+    $('fontSize').value=ns; updateLabel(); return;
+  }
   if(!dragging)return;
   const r=$('cvwrap').getBoundingClientRect();
-  posX=Math.max(0,Math.min(100,((e.clientX-r.left-dragOffX)/canvasW)*100));
-  posY=Math.max(0,Math.min(100,((e.clientY-r.top-dragOffY)/canvasH)*100));
+  let nx=Math.max(0,Math.min(100,((e.clientX-r.left-dragOffX)/canvasW)*100));
+  let ny=Math.max(0,Math.min(100,((e.clientY-r.top-dragOffY)/canvasH)*100));
+  [posX,posY]=applySnap(nx,ny);
   dEl.style.left=posX+'%'; dEl.style.top=posY+'%';
 });
-document.addEventListener('mouseup',()=>{dragging=false;});
+document.addEventListener('mouseup',()=>{
+  dragging=false; resizing=false;
+  $('guideV').classList.remove('active');
+  $('guideH').classList.remove('active');
+});
 dEl.addEventListener('touchstart',e=>{
   dragging=true;
   const t=e.touches[0],r=dEl.getBoundingClientRect();
@@ -1045,16 +1198,58 @@ dEl.addEventListener('touchstart',e=>{
 document.addEventListener('touchmove',e=>{
   if(!dragging)return;
   const t=e.touches[0],r=$('cvwrap').getBoundingClientRect();
-  posX=Math.max(0,Math.min(100,((t.clientX-r.left-dragOffX)/canvasW)*100));
-  posY=Math.max(0,Math.min(100,((t.clientY-r.top-dragOffY)/canvasH)*100));
+  let nx=Math.max(0,Math.min(100,((t.clientX-r.left-dragOffX)/canvasW)*100));
+  let ny=Math.max(0,Math.min(100,((t.clientY-r.top-dragOffY)/canvasH)*100));
+  [posX,posY]=applySnap(nx,ny);
   dEl.style.left=posX+'%'; dEl.style.top=posY+'%';
 },{passive:false});
-document.addEventListener('touchend',()=>{dragging=false;});
+document.addEventListener('touchend',()=>{
+  dragging=false;
+  $('guideV').classList.remove('active');
+  $('guideH').classList.remove('active');
+});
 
 function checkReady(){
   const ok=pdfBytes&&names.length>0;
   $('genBtn').disabled=!ok;
   if(ok){$('sn2').className='snum done';$('sn3').className='snum done';}
+}
+
+/* ── MANUAL NAME ENTRY ── */
+function addManualName(){
+  const inp=$('nameInput');
+  const val=inp.value.trim();
+  if(!val)return;
+  names.push(val);
+  inp.value=''; inp.focus();
+  renderNameChips();
+  if($('draggable').classList.contains('show')){$('nameLabel').textContent=getSample();updateLabel();}
+  $('sn1').className='snum done';
+  checkReady();
+}
+
+function removeName(i){
+  names.splice(i,1);
+  renderNameChips();
+  if(names.length===0)$('sn1').className='snum';
+  checkReady();
+}
+
+function renderNameChips(){
+  $('nameChips').innerHTML=`<div class="chips">
+    ${names.slice(0,24).map((n,idx)=>`<span class="chip">${n}<button class="chip-x" onclick="removeName(${idx})" title="Remove">✕</button></span>`).join('')}
+    ${names.length>24?`<span class="chip more">+${names.length-24} more</span>`:''}
+  </div>`;
+  const nc=$('nameCount');
+  if(names.length>0){nc.style.display='block';$('nameCountNum').textContent=names.length;}
+  else nc.style.display='none';
+}
+
+function downloadSampleCSV(){
+  const csv='name\nJohn Doe\nJane Smith\nAlex Johnson\n';
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download='sample_names.csv'; a.click();
 }
 
 /* ── GENERATE ── */
