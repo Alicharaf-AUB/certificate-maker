@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CertGen — by Ali Charaf</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Instrument+Sans:wght@400;500&family=Cairo:wght@400;600;700;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:ital,wght@0,400;0,700;0,800;0,900;1,400;1,700&family=Nunito:wght@400;700;800;900&family=Raleway:ital,wght@0,400;0,700;0,800;1,400&family=Open+Sans:ital,wght@0,400;0,700;1,400&family=Lato:ital,wght@0,400;0,700;1,400&family=Poppins:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;600;700&family=Roboto:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,400;0,700;1,400&family=Carlito:ital,wght@0,400;0,700;1,400;1,700&family=Ubuntu:ital,wght@0,400;0,700;1,400&family=Josefin+Sans:ital,wght@0,400;0,700;1,400&family=Oswald:wght@400;600;700&family=Bebas+Neue&family=Righteous&family=Alfa+Slab+One&family=Great+Vibes&family=Dancing+Script:wght@400;700&family=Pacifico&family=Satisfy&family=Pinyon+Script&family=Alex+Brush&family=Allura&family=Sacramento&family=Yellowtail&family=Lobster&family=Cinzel:wght@400;700;900&family=Cinzel+Decorative:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Crimson+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  @import url("https://use.typekit.net/vqx2bkr.css");
+</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -397,9 +400,15 @@ footer strong{color:var(--text2);font-weight:500;}
           <option value="HelveticaBold">Helvetica Bold</option>
           <option value="HelveticaOblique">Helvetica Oblique</option>
           <option value="HelveticaBoldOblique">Helvetica Bold Oblique</option>
-          <option value="gf|Montserrat|400|normal">Montserrat (≈ Proxima Nova)</option>
+          <option value="tk|proxima-nova|100|normal">Proxima Nova Thin</option>
+          <option value="tk|proxima-nova|300|normal">Proxima Nova Light</option>
+          <option value="tk|proxima-nova|400|normal">Proxima Nova Regular</option>
+          <option value="tk|proxima-nova|400|italic">Proxima Nova Italic</option>
+          <option value="tk|proxima-nova|700|normal">Proxima Nova Bold</option>
+          <option value="tk|proxima-nova|700|italic">Proxima Nova Bold Italic</option>
+          <option value="gf|Montserrat|400|normal">Montserrat</option>
           <option value="gf|Montserrat|700|normal">Montserrat Bold</option>
-          <option value="gf|Montserrat|800|normal">Montserrat ExtraBold (≈ Proxima Nova ExtraBold)</option>
+          <option value="gf|Montserrat|800|normal">Montserrat ExtraBold</option>
           <option value="gf|Montserrat|900|normal">Montserrat Black</option>
           <option value="gf|Montserrat|400|italic">Montserrat Italic</option>
           <option value="gf|Montserrat|700|italic">Montserrat Bold Italic</option>
@@ -734,6 +743,11 @@ function updateLabel(){
     d.style.fontFamily="'"+parts[1]+"'";
     d.style.fontWeight=parts[2]||'400';
     d.style.fontStyle=parts[3]||'normal';
+  } else if(fv.startsWith('tk|')){
+    const parts=fv.split('|');
+    d.style.fontFamily='"'+parts[1]+'",sans-serif';
+    d.style.fontWeight=parts[2]||'400';
+    d.style.fontStyle=parts[3]||'normal';
   } else if(fv.includes('Times')){
     d.style.fontFamily='Times New Roman,serif';
     d.style.fontWeight=fv.includes('Bold')?'700':'400';
@@ -809,6 +823,16 @@ const FONT_MAP = {
 // Cache for fetched font bytes (avoids re-downloading per certificate)
 const gfontCache = {};
 
+const TYPEKIT_FONT_URLS = {
+  'proxima-nova|100|normal': 'https://use.typekit.net/af/4b22bb/00000000000000007735e601/31/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n1&v=3',
+  'proxima-nova|100|italic': 'https://use.typekit.net/af/da27c4/00000000000000007758cf8d/31/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i1&v=3',
+  'proxima-nova|300|normal': 'https://use.typekit.net/af/3888dc/00000000000000007735e606/31/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n3&v=3',
+  'proxima-nova|400|normal': 'https://use.typekit.net/af/d7ff92/00000000000000007735e609/31/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3',
+  'proxima-nova|400|italic': 'https://use.typekit.net/af/6eb0e3/00000000000000007758cf8f/31/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i4&v=3',
+  'proxima-nova|700|normal': 'https://use.typekit.net/af/5be242/00000000000000007735e603/31/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3',
+  'proxima-nova|700|italic': 'https://use.typekit.net/af/38ea3a/00000000000000007758cf7d/31/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i7&v=3',
+};
+
 async function fetchGoogleFontBytes(family, weight, style) {
   const cacheKey = `${family}|${weight}|${style}`;
   if (gfontCache[cacheKey]) return gfontCache[cacheKey];
@@ -840,12 +864,25 @@ async function generate(){
   const pdfY=pdfPageH-(posY/100)*pdfPageH;
   const {PDFDocument,rgb}=PDFLib;
   const zip=new JSZip();
-  // Pre-fetch Google Font once before the loop
+  // Pre-fetch custom font once before the loop
   let gfontBytes = null;
-  if(fontKey.startsWith('gf|')){
+  if(fontKey.startsWith('gf|') || fontKey.startsWith('tk|')){
     const parts=fontKey.split('|');
     $('statusMsg').textContent='Loading font…';
-    try{ gfontBytes=await fetchGoogleFontBytes(parts[1],parts[2],parts[3]); }
+    try{
+      if(fontKey.startsWith('gf|')){
+        gfontBytes=await fetchGoogleFontBytes(parts[1],parts[2],parts[3]);
+      } else {
+        const tkKey=`${parts[1]}|${parts[2]}|${parts[3]}`;
+        if(gfontCache[tkKey]){ gfontBytes=gfontCache[tkKey]; }
+        else{
+          const url=TYPEKIT_FONT_URLS[tkKey];
+          if(!url) throw new Error('Unknown Proxima Nova variant');
+          gfontBytes=await fetch(url).then(r=>r.arrayBuffer());
+          gfontCache[tkKey]=gfontBytes;
+        }
+      }
+    }
     catch(e){ alert('Could not load font: '+e.message); btn.disabled=false; return; }
   }
   for(let i=0;i<names.length;i++){
