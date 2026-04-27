@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CertGen — by Ali Charaf</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Instrument+Sans:wght@400;500&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Instrument+Sans:wght@400;500&family=Cairo:wght@400;600;700;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:ital,wght@0,400;0,700;0,800;0,900;1,400;1,700&family=Nunito:wght@400;700;800;900&family=Raleway:ital,wght@0,400;0,700;0,800;1,400&family=Open+Sans:ital,wght@0,400;0,700;1,400&family=Lato:ital,wght@0,400;0,700;1,400&family=Poppins:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;600;700&family=Roboto:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,400;0,700;1,400&family=Carlito:ital,wght@0,400;0,700;1,400;1,700&family=Ubuntu:ital,wght@0,400;0,700;1,400&family=Josefin+Sans:ital,wght@0,400;0,700;1,400&family=Oswald:wght@400;600;700&family=Bebas+Neue&family=Righteous&family=Alfa+Slab+One&family=Great+Vibes&family=Dancing+Script:wght@400;700&family=Pacifico&family=Satisfy&family=Pinyon+Script&family=Alex+Brush&family=Allura&family=Sacramento&family=Yellowtail&family=Lobster&family=Cinzel:wght@400;700;900&family=Cinzel+Decorative:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Crimson+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -366,12 +366,91 @@ footer strong{color:var(--text2);font-weight:500;}
           <option value="TimesRomanBold">Times New Roman Bold</option>
           <option value="TimesRomanItalic">Times New Roman Italic</option>
           <option value="TimesRomanBoldItalic">Times New Roman Bold Italic</option>
+          <option value="gf|Playfair Display|400|normal">Playfair Display</option>
+          <option value="gf|Playfair Display|700|normal">Playfair Display Bold</option>
+          <option value="gf|Playfair Display|900|normal">Playfair Display Black</option>
+          <option value="gf|Playfair Display|400|italic">Playfair Display Italic</option>
+          <option value="gf|Playfair Display|700|italic">Playfair Display Bold Italic</option>
+          <option value="gf|Merriweather|400|normal">Merriweather</option>
+          <option value="gf|Merriweather|700|normal">Merriweather Bold</option>
+          <option value="gf|Merriweather|400|italic">Merriweather Italic</option>
+          <option value="gf|EB Garamond|400|normal">EB Garamond</option>
+          <option value="gf|EB Garamond|700|normal">EB Garamond Bold</option>
+          <option value="gf|EB Garamond|400|italic">EB Garamond Italic</option>
+          <option value="gf|Lora|400|normal">Lora</option>
+          <option value="gf|Lora|700|normal">Lora Bold</option>
+          <option value="gf|Lora|400|italic">Lora Italic</option>
+          <option value="gf|Cormorant Garamond|400|normal">Cormorant Garamond</option>
+          <option value="gf|Cormorant Garamond|600|normal">Cormorant Garamond SemiBold</option>
+          <option value="gf|Libre Baskerville|400|normal">Libre Baskerville</option>
+          <option value="gf|Libre Baskerville|700|normal">Libre Baskerville Bold</option>
+          <option value="gf|Crimson Text|400|normal">Crimson Text</option>
+          <option value="gf|Crimson Text|700|normal">Crimson Text Bold</option>
+          <option value="gf|Cinzel|400|normal">Cinzel</option>
+          <option value="gf|Cinzel|700|normal">Cinzel Bold</option>
+          <option value="gf|Cinzel|900|normal">Cinzel Black</option>
+          <option value="gf|Cinzel Decorative|400|normal">Cinzel Decorative</option>
+          <option value="gf|Cinzel Decorative|700|normal">Cinzel Decorative Bold</option>
         </optgroup>
         <optgroup label="── Sans-Serif">
           <option value="Helvetica" selected>Helvetica</option>
           <option value="HelveticaBold">Helvetica Bold</option>
           <option value="HelveticaOblique">Helvetica Oblique</option>
           <option value="HelveticaBoldOblique">Helvetica Bold Oblique</option>
+          <option value="gf|Montserrat|400|normal">Montserrat (≈ Proxima Nova)</option>
+          <option value="gf|Montserrat|700|normal">Montserrat Bold</option>
+          <option value="gf|Montserrat|800|normal">Montserrat ExtraBold (≈ Proxima Nova ExtraBold)</option>
+          <option value="gf|Montserrat|900|normal">Montserrat Black</option>
+          <option value="gf|Montserrat|400|italic">Montserrat Italic</option>
+          <option value="gf|Montserrat|700|italic">Montserrat Bold Italic</option>
+          <option value="gf|Nunito|400|normal">Nunito</option>
+          <option value="gf|Nunito|700|normal">Nunito Bold</option>
+          <option value="gf|Nunito|800|normal">Nunito ExtraBold</option>
+          <option value="gf|Nunito|900|normal">Nunito Black</option>
+          <option value="gf|Carlito|400|normal">Carlito (≈ Calibri)</option>
+          <option value="gf|Carlito|700|normal">Carlito Bold (≈ Calibri Bold)</option>
+          <option value="gf|Carlito|400|italic">Carlito Italic (≈ Calibri Italic)</option>
+          <option value="gf|Carlito|700|italic">Carlito Bold Italic (≈ Calibri Bold Italic)</option>
+          <option value="gf|Raleway|400|normal">Raleway</option>
+          <option value="gf|Raleway|700|normal">Raleway Bold</option>
+          <option value="gf|Raleway|800|normal">Raleway ExtraBold</option>
+          <option value="gf|Open Sans|400|normal">Open Sans</option>
+          <option value="gf|Open Sans|700|normal">Open Sans Bold</option>
+          <option value="gf|Lato|400|normal">Lato</option>
+          <option value="gf|Lato|700|normal">Lato Bold</option>
+          <option value="gf|Poppins|400|normal">Poppins</option>
+          <option value="gf|Poppins|600|normal">Poppins SemiBold</option>
+          <option value="gf|Poppins|700|normal">Poppins Bold</option>
+          <option value="gf|Inter|400|normal">Inter</option>
+          <option value="gf|Inter|600|normal">Inter SemiBold</option>
+          <option value="gf|Inter|700|normal">Inter Bold</option>
+          <option value="gf|Roboto|400|normal">Roboto</option>
+          <option value="gf|Roboto|700|normal">Roboto Bold</option>
+          <option value="gf|Source Sans 3|400|normal">Source Sans 3</option>
+          <option value="gf|Source Sans 3|700|normal">Source Sans 3 Bold</option>
+          <option value="gf|Ubuntu|400|normal">Ubuntu</option>
+          <option value="gf|Ubuntu|700|normal">Ubuntu Bold</option>
+          <option value="gf|Josefin Sans|400|normal">Josefin Sans</option>
+          <option value="gf|Josefin Sans|700|normal">Josefin Sans Bold</option>
+          <option value="gf|Oswald|400|normal">Oswald</option>
+          <option value="gf|Oswald|600|normal">Oswald SemiBold</option>
+          <option value="gf|Oswald|700|normal">Oswald Bold</option>
+          <option value="gf|Bebas Neue|400|normal">Bebas Neue</option>
+          <option value="gf|Righteous|400|normal">Righteous</option>
+          <option value="gf|Alfa Slab One|400|normal">Alfa Slab One</option>
+          <option value="gf|Lobster|400|normal">Lobster</option>
+        </optgroup>
+        <optgroup label="── Script / Cursive">
+          <option value="gf|Great Vibes|400|normal">Great Vibes</option>
+          <option value="gf|Pacifico|400|normal">Pacifico</option>
+          <option value="gf|Satisfy|400|normal">Satisfy</option>
+          <option value="gf|Dancing Script|400|normal">Dancing Script</option>
+          <option value="gf|Dancing Script|700|normal">Dancing Script Bold</option>
+          <option value="gf|Pinyon Script|400|normal">Pinyon Script</option>
+          <option value="gf|Alex Brush|400|normal">Alex Brush</option>
+          <option value="gf|Allura|400|normal">Allura</option>
+          <option value="gf|Sacramento|400|normal">Sacramento</option>
+          <option value="gf|Yellowtail|400|normal">Yellowtail</option>
         </optgroup>
         <optgroup label="── Monospace">
           <option value="Courier">Courier</option>
@@ -650,13 +729,24 @@ function updateLabel(){
   d.style.color=$('textColor').value;
   // use system font preview for the draggable label (closest approximation)
   const fv=$('fontFace').value;
-  if(fv.includes('Times'))d.style.fontFamily='Times New Roman,serif';
-  else if(fv.includes('Courier'))d.style.fontFamily='Courier New,monospace';
-  else d.style.fontFamily='Helvetica,Arial,sans-serif';
-  const isBold=fv.includes('Bold');
-  const isItalic=fv.includes('Italic')||fv.includes('Oblique');
-  d.style.fontWeight=isBold?'700':'400';
-  d.style.fontStyle=isItalic?'italic':'normal';
+  if(fv.startsWith('gf|')){
+    const parts=fv.split('|');
+    d.style.fontFamily="'"+parts[1]+"'";
+    d.style.fontWeight=parts[2]||'400';
+    d.style.fontStyle=parts[3]||'normal';
+  } else if(fv.includes('Times')){
+    d.style.fontFamily='Times New Roman,serif';
+    d.style.fontWeight=fv.includes('Bold')?'700':'400';
+    d.style.fontStyle=fv.includes('Italic')?'italic':'normal';
+  } else if(fv.includes('Courier')){
+    d.style.fontFamily='Courier New,monospace';
+    d.style.fontWeight=fv.includes('Bold')?'700':'400';
+    d.style.fontStyle=(fv.includes('Italic')||fv.includes('Oblique'))?'italic':'normal';
+  } else {
+    d.style.fontFamily='Helvetica,Arial,sans-serif';
+    d.style.fontWeight=fv.includes('Bold')?'700':'400';
+    d.style.fontStyle=(fv.includes('Oblique')||fv.includes('Italic'))?'italic':'normal';
+  }
 }
 
 function toggleBorder(){$('draggable').classList.toggle('no-border',!$('borderToggle').checked);}
@@ -716,6 +806,24 @@ const FONT_MAP = {
   'ZapfDingbats':         PDFLib.StandardFonts.ZapfDingbats,
 };
 
+// Cache for fetched font bytes (avoids re-downloading per certificate)
+const gfontCache = {};
+
+async function fetchGoogleFontBytes(family, weight, style) {
+  const cacheKey = `${family}|${weight}|${style}`;
+  if (gfontCache[cacheKey]) return gfontCache[cacheKey];
+  // Fetch the CSS from Google Fonts API to get the actual TTF URL
+  const ital = style === 'italic' ? 1 : 0;
+  const cssUrl = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(family)}:ital,wght@${ital},${weight}&display=swap`;
+  const css = await fetch(cssUrl, {headers:{'User-Agent':'Mozilla/5.0'}}).then(r=>r.text());
+  // Extract the first TTF or WOFF2 URL from the CSS
+  const match = css.match(/src:\s*url\(([^)]+\.(?:ttf|woff2))\)/);
+  if (!match) throw new Error(`Could not find font file for ${family} ${weight} ${style}`);
+  const fontBytes = await fetch(match[1]).then(r=>r.arrayBuffer());
+  gfontCache[cacheKey] = fontBytes;
+  return fontBytes;
+}
+
 async function generate(){
   const btn=$('genBtn'); btn.disabled=true;
   $('progOut').classList.add('show');
@@ -732,12 +840,25 @@ async function generate(){
   const pdfY=pdfPageH-(posY/100)*pdfPageH;
   const {PDFDocument,rgb}=PDFLib;
   const zip=new JSZip();
+  // Pre-fetch Google Font once before the loop
+  let gfontBytes = null;
+  if(fontKey.startsWith('gf|')){
+    const parts=fontKey.split('|');
+    $('statusMsg').textContent='Loading font…';
+    try{ gfontBytes=await fetchGoogleFontBytes(parts[1],parts[2],parts[3]); }
+    catch(e){ alert('Could not load font: '+e.message); btn.disabled=false; return; }
+  }
   for(let i=0;i<names.length;i++){
     const name=names[i];
     $('progIn').style.width=Math.round(((i+1)/names.length)*100)+'%';
     $('statusMsg').textContent=`${i+1} / ${names.length} — ${name}`;
     const doc=await PDFDocument.load(pdfBytes);
-    const font=await doc.embedFont(FONT_MAP[fontKey]||PDFLib.StandardFonts.Helvetica);
+    let font;
+    if(gfontBytes){
+      font=await doc.embedFont(gfontBytes, {subset:true});
+    } else {
+      font=await doc.embedFont(FONT_MAP[fontKey]||PDFLib.StandardFonts.Helvetica);
+    }
     const page=doc.getPages()[0];
     const tw=font.widthOfTextAtSize(name,fs);
     let drawX=pdfX;
