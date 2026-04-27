@@ -1003,6 +1003,7 @@ let pdfBytes=null, pendingFile=null, names=[], zipBlob=null;
 let canvasW=0, canvasH=0, pdfPageW=0, pdfPageH=0, rs=1;
 let posX=50, posY=45, dragging=false, dragOffX=0, dragOffY=0;
 let resizing=false, resizeStartX=0, resizeStartFontSize=0;
+let isGenerating=false;
 
 /* ── DROP ZONES ── */
 const csvZoneEl=$('csvZone');
@@ -1299,33 +1300,40 @@ async function fetchGoogleFontBytes(family, weight, style) {
 }
 
 async function generate(){
-  const btn=$('genBtn'); btn.disabled=true;
+  if(isGenerating) return;
+  isGenerating=true;
+  const btn=$('genBtn');
+  btn.disabled=true;
   $('progOut').classList.add('show');
   $('dlBtn').classList.remove('show');
+  $('progIn').style.width='0%';
   $('statusMsg').textContent='Starting…';
-  const fs=parseInt($('fontSize').value);
-  const hex=$('textColor').value;
-  const cr=parseInt(hex.slice(1,3),16)/255;
-  const cg=parseInt(hex.slice(3,5),16)/255;
-  const cb=parseInt(hex.slice(5,7),16)/255;
-  const align=$('align').value;
-  const fontKey=$('fontFace').value;
-  const pdfX=(posX/100)*pdfPageW;
-  const pdfY=pdfPageH-(posY/100)*pdfPageH;
-  const {PDFDocument,rgb}=PDFLib;
-  const zip=new JSZip();
-  // Pre-fetch custom font once before the loop
-  let gfontBytes = null;
-  if(fontKey.startsWith('gf|') || fontKey.startsWith('tk|')){
-    const parts=fontKey.split('|');
-    $('statusMsg').textContent='Loading font…';
-    try{
+
+  try{
+    const fs=parseInt($('fontSize').value);
+    const hex=$('textColor').value;
+    const cr=parseInt(hex.slice(1,3),16)/255;
+    const cg=parseInt(hex.slice(3,5),16)/255;
+    const cb=parseInt(hex.slice(5,7),16)/255;
+    const align=$('align').value;
+    const fontKey=$('fontFace').value;
+    const pdfX=(posX/100)*pdfPageW;
+    const pdfY=pdfPageH-(posY/100)*pdfPageH;
+    const {PDFDocument,rgb}=PDFLib;
+    const zip=new JSZip();
+
+    // Pre-fetch custom font once before the loop
+    let gfontBytes = null;
+    if(fontKey.startsWith('gf|') || fontKey.startsWith('tk|')){
+      const parts=fontKey.split('|');
+      $('statusMsg').textContent='Loading font…';
       if(fontKey.startsWith('gf|')){
         gfontBytes=await fetchGoogleFontBytes(parts[1],parts[2],parts[3]);
       } else {
         const tkKey=`${parts[1]}|${parts[2]}|${parts[3]}`;
-        if(gfontCache[tkKey]){ gfontBytes=gfontCache[tkKey]; }
-        else{
+        if(gfontCache[tkKey]){
+          gfontBytes=gfontCache[tkKey];
+        } else {
           const url=TYPEKIT_FONT_URLS[tkKey];
           if(!url) throw new Error('Unknown Proxima Nova variant');
           gfontBytes=await fetch(url).then(r=>r.arrayBuffer());
@@ -1333,33 +1341,77 @@ async function generate(){
         }
       }
     }
-    catch(e){ alert('Could not load font: '+e.message); btn.disabled=false; return; }
-  }
-  for(let i=0;i<names.length;i++){
-    const name=names[i];
-    $('progIn').style.width=Math.round(((i+1)/names.length)*100)+'%';
-    $('statusMsg').textContent=`${i+1} / ${names.length} — ${name}`;
-    const doc=await PDFDocument.load(pdfBytes);
-    let font;
-    if(gfontBytes){
-      font=await doc.embedFont(gfontBytes, {subset:true});
-    } else {
-      font=await doc.embedFont(FONT_MAP[fontKey]||PDFLib.StandardFonts.Helvetica);
+
+    let successCount=0;
+    let failCount=0;
+    for(let i=0;i<names.length;i++){
+      const rawName=String(names[i]||'').trim();
+      if(!rawName){
+        failCount++;
+        continue;
+      }
+
+      // Reserve 10% for ZIP stage so users still see movement after PDF loop
+      const loopPct=Math.round(((i+1)/names.length)*90);
+      $('progIn').style.width=loopPct+'%';
+      $('statusMsg').textContent=`Generating ${i+1}/${names.length} — ${rawName}`;
+
+      try{
+        const doc=await PDFDocument.load(pdfBytes);
+        let font;
+        if(gfontBytes){
+          font=await doc.embedFont(gfontBytes, {subset:true});
+        } else {
+          font=await doc.embedFont(FONT_MAP[fontKey]||PDFLib.StandardFonts.Helvetica);
+        }
+        const page=doc.getPages()[0];
+        const tw=font.widthOfTextAtSize(rawName,fs);
+        let drawX=pdfX;
+        if(align==='center') drawX=pdfX-tw/2;
+        else if(align==='right') drawX=pdfX-tw;
+        page.drawText(rawName,{x:drawX,y:pdfY-fs*0.3,size:fs,font,color:rgb(cr,cg,cb)});
+
+        const safeBase=rawName.replace(/[^a-z0-9]/gi,'_').replace(/^_+|_+$/g,'');
+        const fileBase=safeBase||`certificate_${i+1}`;
+        zip.file(`${fileBase}_certificate.pdf`,await doc.save());
+        successCount++;
+      } catch(err){
+        console.error('Certificate generation failed for name:', rawName, err);
+        failCount++;
+      }
+
+      await new Promise(r=>setTimeout(r,0));
     }
-    const page=doc.getPages()[0];
-    const tw=font.widthOfTextAtSize(name,fs);
-    let drawX=pdfX;
-    if(align==='center')drawX=pdfX-tw/2;
-    else if(align==='right')drawX=pdfX-tw;
-    page.drawText(name,{x:drawX,y:pdfY-fs*0.3,size:fs,font,color:rgb(cr,cg,cb)});
-    zip.file(`${name.replace(/[^a-z0-9]/gi,'_')}_certificate.pdf`,await doc.save());
-    await new Promise(r=>setTimeout(r,0));
+
+    $('statusMsg').textContent='Building ZIP…';
+    zipBlob=await zip.generateAsync(
+      {type:'blob', compression:'STORE'},
+      metadata=>{
+        const pct=Math.min(100,Math.round(90 + metadata.percent*0.1));
+        $('progIn').style.width=pct+'%';
+      }
+    );
+
+    if(successCount===0){
+      $('statusMsg').textContent='No certificates were generated. Check your names/font and try again.';
+      $('sn4').className='snum';
+      return;
+    }
+
+    $('progIn').style.width='100%';
+    $('statusMsg').textContent=failCount>0
+      ? `✓ ${successCount} ready, ${failCount} skipped`
+      : `✓ ${successCount} certificates ready`;
+    $('sn4').className='snum done';
+    $('dlBtn').classList.add('show');
+  } catch(e){
+    console.error(e);
+    $('statusMsg').textContent='Generation failed. Please try again.';
+    alert('Generation failed: '+(e?.message||e));
+  } finally {
+    isGenerating=false;
+    btn.disabled=false;
   }
-  $('statusMsg').textContent=`✓ ${names.length} certificates ready`;
-  $('sn4').className='snum done';
-  zipBlob=await zip.generateAsync({type:'blob'});
-  $('dlBtn').classList.add('show');
-  btn.disabled=false;
 }
 
 function downloadZip(){
